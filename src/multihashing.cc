@@ -25,6 +25,7 @@ extern "C" {
     #include "scryptjane.h"
     #include "scryptn.h"
     #include "sha1.h"
+    #include "sha256csm.h"
     #include "sha256d.h"
     #include "shavite3.h"
     #include "skein.h"
@@ -96,6 +97,7 @@ using namespace v8;
  DECLARE_CALLBACK(quark, quark_hash, 32);
  DECLARE_CALLBACK(qubit, qubit_hash, 32);
  DECLARE_CALLBACK(sha1, sha1_hash, 32);
+ DECLARE_CALLBACK(sha256csm, sha256csm_hash, 32);
  DECLARE_CALLBACK(sha256d, sha256d_hash, 32);
  DECLARE_CALLBACK(shavite3, shavite3_hash, 32);
  DECLARE_CALLBACK(skein, skein_hash, 32);
@@ -412,6 +414,7 @@ NAN_MODULE_INIT(init) {
     NAN_EXPORT(target, scryptjane);
     NAN_EXPORT(target, scryptn);
     NAN_EXPORT(target, sha1);
+    NAN_EXPORT(target, sha256csm);
     NAN_EXPORT(target, sha256d);
     NAN_EXPORT(target, shavite3);
     NAN_EXPORT(target, skein);
