@@ -33,6 +33,7 @@ extern "C"
 #include "phi1612.h"
 #include "quark.h"
 #include "qubit.h"
+#include "scrypt.h"
 #include "scryptjane.h"
 #include "scryptn.h"
 #include "sha1.h"
@@ -235,25 +236,22 @@ DECLARE_FUNC(argon2id)
 
 DECLARE_FUNC(scrypt)
 {
-    if (info.Length() < 3)
-        RETURN_EXCEPT("You must provide buffer to hash, N value, and R value");
+   if (info.Length() < 1)
+       RETURN_EXCEPT("You must provide one argument.");
 
-    Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+   Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
 
-    if (!Buffer::HasInstance(target))
-        RETURN_EXCEPT("Argument should be a buffer object.");
+   if(!Buffer::HasInstance(target))
+       RETURN_EXCEPT("Argument should be a buffer object.");
 
-    unsigned int nValue = Nan::To<uint32_t>(info[1]).ToChecked();
-    unsigned int rValue = Nan::To<uint32_t>(info[2]).ToChecked();
+   char * input = Buffer::Data(target);
+   char output[32];
 
-    char *input = Buffer::Data(target);
-    char output[32];
+   uint32_t input_len = Buffer::Length(target);
 
-    uint32_t input_len = Buffer::Length(target);
+   scrypt_1024_1_1_256(input, output, input_len);
 
-    scrypt_N_R_1_256(input, output, nValue, rValue, input_len);
-
-    SET_BUFFER_RETURN(output, 32);
+   SET_BUFFER_RETURN(output, 32);
 }
 
 DECLARE_FUNC(neoscrypt)
